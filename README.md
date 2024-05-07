@@ -4,8 +4,7 @@ Author: Prachi Bisht
 Date: 06-05-2024
 
 ## Overview
-### albedoIrradiance.py
-This Python script calculates the albedo irradiance on a LEO spacecraft
+albedoIrradiance.py script calculates the albedo irradiance on a LEO spacecraft
 with sun-pointing solar panels at a given location and time using albedo
 dataset from Moderate Resolution Imaging Spectroradiometer (MODIS) aboard Terra Satellite. 
 
