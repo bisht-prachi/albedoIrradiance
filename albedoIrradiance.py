@@ -192,7 +192,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
         * df["albedo"]
         * df["cell_area"]
         * df["dot_prod_with_sun"]
-        * df["dot_prod_with_sat"]
+        * df["dot_prod_with_panel"]
     ) * prefactor
 
     df["irradiance"] = df["irradiance"].clip(0, None)
