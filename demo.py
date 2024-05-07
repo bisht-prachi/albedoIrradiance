@@ -42,13 +42,9 @@ import plotly.express as px  # (optional)
 
 # test satellite location and time
 filename = "\\MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
-at_time = "2023-12-23 20:44:00"
-sc_x_pos, sc_y_pos, sc_z_pos = (
-    -85.757013,
-    -6696.066279,
-    -2415.234881,
-) 
 
+at_time = "2023-12-23  00:00:13"
+sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
 
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
@@ -72,7 +68,7 @@ fig = px.scatter_geo(
     lat="lat",
     lon="lon",
     color="irradiance",
-    opacity=0.4,
+    opacity=0.3,
     height=600,
     color_continuous_scale="Blues_r",
     range_color=[geo_dataframe["irradiance"].min(), geo_dataframe["irradiance"].max()],
@@ -80,9 +76,10 @@ fig = px.scatter_geo(
 )
 
 fig.update_traces(marker=dict(size=5))
+fig.write_html("irradiance_23122024.html")
 fig.update_geos(resolution=110)
 fig.update_layout(
-    title_text="<b>irradiance W/m^2 </b>",
+    title_text="<b>irradiance W/m^2  </b><br>",
     title_x=0.5,
     title_y=0.93,
     font_family="Arial",
@@ -95,10 +92,12 @@ fig.update_layout(
         x=1.08,
         yanchor="bottom",
         y=0.15,
-        thickness=35,
+        thickness=15,
         bgcolor="white",
     ),
 )
+
+fig.show()
 
 # geo visulaization of irradiance from the field-of-view of satellite saved as html file
 fig.write_html("irradiance_23122024.html")

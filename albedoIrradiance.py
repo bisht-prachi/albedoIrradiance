@@ -40,9 +40,9 @@ earth_polar_radius = 6356.7523142 * u.km
 ## Functions
 
 
-def getEarthAlbedodf(filename):    
+def getEarthAlbedodf(filename):
     global df_earth
-    
+
     # Read Earth albedo data from a CSV file
     file = folder_path + f"{filename}.csv"
     df_read = pd.read_csv(file)
@@ -59,8 +59,7 @@ def getEarthAlbedodf(filename):
     earth_shape = albedo_matrix.shape
     resolution = lat_array[0] - lat_array[1]
     pairs = list(product(lat_array, lon_array))
-    
-    
+
     df_earth = pd.DataFrame(pairs, columns=["lat", "lon"])
 
     differential_area = np.cos(np.radians(resolution)) * np.array(
@@ -122,7 +121,6 @@ def getSatFovdf(df_earth, sat_vector_ecef):
     return df
 
 
-
 def getFOVElementVectorsECEF(df):
     # Calculate element vectors in ECEF coordinates
     element_vectors_ecef = SphericalRepresentation(
@@ -139,7 +137,7 @@ def getFOVDotProductwithSun(df, observation_time):
     locations = EarthLocation(
         lat=df["lat"].values * u.deg, lon=df["lon"].values * u.deg, height=0.0
     )
-    
+
     sun_gcrs = get_sun(observation_time)
     sun_altaz = sun_gcrs.transform_to(AltAz(location=locations))
     df["sunlit_flag"] = sun_altaz.alt.deg > 0
@@ -151,17 +149,13 @@ def getFOVDotProductwithSun(df, observation_time):
     element_norm_ecef = element_vectors_ecef / element_vectors_ecef.norm()
 
     df["dot_prod_with_sun"] = sun_norm_altaz.dot(element_norm_ecef)
-    
+
     sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
 
     return sun_vector_ecef, df[df["sunlit_flag"]].copy()
 
 
-
-
-def getFOVDotProductwithPanel(
-    df, sat_vector_ecef, sun_vector_ecef
-):
+def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
     # Calculate dot product with the panel
     panel_vector_ecef = (
         sat_vector_ecef / sat_vector_ecef.norm()
@@ -178,25 +172,20 @@ def getFOVDotProductwithPanel(
     return panel_vector_ecef, df
 
 
-
 def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
     # Main function to calculate irradiance at the satellite
     observation_time = Time(at_time)  # , '%d-%m-%Y  %H:%M:%S')
     sat_vector_ecef = getSatVectorECEF(sc_x_pos, sc_y_pos, sc_z_pos)
 
     df = getSatFovdf(df_earth, sat_vector_ecef)
-    sun_vector_ecef, df = getFOVDotProductwithSun(
-        df, observation_time
-    )
+    sun_vector_ecef, df = getFOVDotProductwithSun(df, observation_time)
     panel_vector_ecef, df = getFOVDotProductwithPanel(
         df, sat_vector_ecef, sun_vector_ecef
     )
-    
+
     # Calculate irradiance
     prefactor = (
-        am0_intensity
-        * earth_mean_radius ** 2
-        / (np.pi * (sat_vector_ecef.norm()) ** 2)
+        am0_intensity * earth_mean_radius**2 / (np.pi * (sat_vector_ecef.norm()) ** 2)
     )
     df["irradiance"] = (
         df["sunlit_flag"]
@@ -205,11 +194,11 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
         * df["dot_prod_with_sun"]
         * df["dot_prod_with_sat"]
     ) * prefactor
-    
+
     df["irradiance"] = df["irradiance"].clip(0, None)
 
     irradiance = df["irradiance"].sum()
-    
+
     return df, irradiance
 
 
@@ -220,8 +209,8 @@ def main():
     sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 
     observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
-    
-    # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo  
+
+    # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
     getEarthAlbedodf(filename)
     geo_dataframe, irradiance = getIrradianceAtSat(
         observation_time, sc_x_pos, sc_y_pos, sc_z_pos
