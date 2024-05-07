@@ -1,4 +1,3 @@
-# albedoIrradiance
 # Albedo Irradiance Calculator
 
 Author: Prachi Bisht
