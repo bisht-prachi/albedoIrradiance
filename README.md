@@ -73,7 +73,8 @@ Irradiance: [irradiance value] W/m^2
 
 ![sunlit_23122024](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/ef3e5b81-d698-4410-b6aa-8f48fa3ebac9)
 
-![irradiance_23122024](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/19f92db7-e607-4061-a516-d73a02c25373)
+![irradiance_23122024](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/b8e2c96d-55d0-4f13-89c7-31372ef97626)
+
 
 
 
