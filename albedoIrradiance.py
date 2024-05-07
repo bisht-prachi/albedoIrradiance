@@ -152,8 +152,6 @@ def getFOVDotProductwithSun(df, observation_time):
 
     df["dot_prod_with_sun"] = sun_norm_altaz.dot(element_norm_ecef)
     
-    # df["dot_prod_with_sun"] = np.dot(sun_altaz.cartesian.xyz.T, element_norm_ecef.T)
-
     sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
 
     return sun_vector_ecef, df[df["sunlit_flag"]].copy()
