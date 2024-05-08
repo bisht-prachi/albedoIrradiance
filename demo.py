@@ -41,16 +41,14 @@ import pandas as pd
 import plotly.express as px  # optional
 
 # test satellite location and time
-filename = "MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
-
+filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
 at_time = "2023-12-23  00:00:13"
 sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
-observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
 
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
-
 arad.getEarthAlbedodf(filename)
 
+observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
 # Get irradiance
 geo_dataframe, irradiance = arad.getIrradianceAtSat(
     observation_time, sc_x_pos, sc_y_pos, sc_z_pos
@@ -76,14 +74,13 @@ fig = px.scatter_geo(
 )
 
 fig.update_traces(marker=dict(size=5))
-fig.write_html("irradiance_23122024.html")
 fig.update_geos(resolution=110)
 fig.update_layout(
-    title_text="<b>irradiance (W/m^2) from satellite FOV </b><br>",
+    title_text=f"<b>irradiance (W/m^2) from satellite FOV <br> sat at {location} </b><br>",
     title_x=0.5,
-    title_y=0.93,
+    title_y=0.97,
     font_family="Arial",
-    font_size=22,
+    font_size=16,
     geo=dict(bgcolor="cornflowerblue", landcolor="forestgreen"),
     coloraxis_colorbar=dict(
         orientation="v",
@@ -92,14 +89,13 @@ fig.update_layout(
         x=1.08,
         yanchor="bottom",
         y=0.15,
-        thickness=15,
+        thickness=25,
         bgcolor="white",
     ),
 )
 
-fig.show()
-
+formatted_time = at_time.replace(":", "-")
 # geo visulaization of irradiance from the field-of-view of satellite saved as html file
-fig.write_html("irradiance_23122024.html")
+fig.write_html(f"irradiance_{formatted_time}.html")
 
 fig.show()

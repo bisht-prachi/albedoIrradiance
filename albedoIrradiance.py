@@ -201,7 +201,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
 
 def main():
     # Main function to execute the code
-    filename = "MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
+    filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
     at_time = "2023-12-23  00:00:13"
     sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 
