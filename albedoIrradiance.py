@@ -15,8 +15,6 @@ from astropy.time import Time
 from astropy.coordinates import (
     get_sun,
     AltAz,
-    GCRS,
-    ITRS,
     CartesianRepresentation,
     SphericalRepresentation,
     EarthLocation,
