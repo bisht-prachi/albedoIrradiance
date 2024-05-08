@@ -24,7 +24,7 @@ getEarthAlbedodf(filename)
 	Output:
 	1). global dataframe containing:
 	['lat', 'lon', 'cell_area', 'albedo']
-	for earth on the day 'filename' was collected for
+	of earth for the month 'filename' was collected for
 
 ## Function
 
