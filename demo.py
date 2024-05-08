@@ -45,6 +45,10 @@ filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
 at_time = "2023-12-23  00:00:13"
 sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 
+# filename = "MCD43C3_M_BSA_2023-03-01_rgb_360x180.SS"
+# at_time = "2023-03-20 00:51:00"
+# sc_x_pos, sc_y_pos, sc_z_pos = (1207.007071, 961.485658,6935.483990	)
+
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
 arad.getEarthAlbedodf(filename)
 

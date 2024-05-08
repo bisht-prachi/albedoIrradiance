@@ -182,7 +182,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
 
     # Calculate irradiance
     prefactor = (
-        am0_intensity * earth_mean_radius**2 / (np.pi * (sat_vector_ecef.norm()) ** 2)
+        am0_intensity * earth_mean_radius**2 / (np.pi * sat_vector_ecef.norm()) ** 2
     )
     df["irradiance"] = (
         df["sunlit_flag"]
