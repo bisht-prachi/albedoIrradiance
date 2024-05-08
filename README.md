@@ -16,7 +16,8 @@ See 'demo.py' for guidance.
      Input:
 	1). filename: albedo refelctivity file from 
                       https://neo.gsfc.nasa.gov/view.php?datasetId=MCD43C3_E_BSA&date=2023-12-01
-                      can upgrade to higher resolution
+                      select 'CSV for Excel' file type with 360x180 resolution.
+		      can upgrade to higher resolution
      Output:
         1). global dataframe containing:
            ['lat', 'lon', 'cell_area', 'albedo']
