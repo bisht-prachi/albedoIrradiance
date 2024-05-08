@@ -29,7 +29,7 @@ from astropy import constants as const
 folder_name = "albedoDataset"
 
 ## Global constants
-am0_intensity = 1367
+am0_intensity = 1367 # W / m^2
 earth_mean_radius = const.R_earth.to(u.km)
 earth_equatorial_radius = 6378.137 * u.km
 earth_polar_radius = 6356.7523142 * u.km
