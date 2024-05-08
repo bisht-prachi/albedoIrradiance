@@ -12,7 +12,9 @@ See 'demo.py' for guidance.
 
 
 ## Function
+
 getEarthAlbedodf(filename)
+
 	Input:
 	1). filename: albedo refelctivity file from 
 	https://neo.gsfc.nasa.gov/view.php?datasetId=MCD43C3_E_BSA&date=2023-12-01
@@ -25,7 +27,9 @@ getEarthAlbedodf(filename)
 	for earth on the day 'filename' was collected for
 
 ## Function
+
 getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos)
+
 	Input:
 	1). at_time: time eg. "23-12-2023  00:00:13"
 	2). sc_x_pos: spaccraft x poisition (ECEF)
