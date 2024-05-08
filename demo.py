@@ -76,7 +76,7 @@ fig = px.scatter_geo(
 fig.update_traces(marker=dict(size=5))
 fig.update_geos(resolution=110)
 fig.update_layout(
-    title_text=f"<b>irradiance (W/m^2) from satellite FOV <br> sat at {location} </b><br>",
+    title_text=f"<b>irradiance (W/m^2) from satellite FOV <br> satellite at {location} on {at_time}</b><br>",
     title_x=0.5,
     title_y=0.97,
     font_family="Arial",
