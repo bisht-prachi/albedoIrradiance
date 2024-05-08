@@ -11,10 +11,8 @@ import numpy as np
 import pandas as pd
 from itertools import product
 import os
-from datetime import datetime
 from astropy.time import Time
 from astropy.coordinates import (
-    SkyCoord,
     get_sun,
     AltAz,
     GCRS,
@@ -27,8 +25,8 @@ import astropy.units as u
 from astropy import constants as const
 
 
-# Getting the current working directory
-folder_path = os.getcwd()
+# Getting the directory containing albedo dataset wrt to current directory
+folder_name = "albedoDataset"
 
 ## Global constants
 am0_intensity = 1367
@@ -39,12 +37,13 @@ earth_polar_radius = 6356.7523142 * u.km
 
 ## Functions
 
-
 def getEarthAlbedodf(filename):
+    # df_Earth is initialized globally. useful if getIrradianceAtSat() is used in loop. need not
+    # initialize df_Earth repeatedly
     global df_earth
 
     # Read Earth albedo data from a CSV file
-    file = folder_path + f"{filename}.csv"
+    file = os.path.join(os.getcwd(), folder_name, filename + ".csv")
     df_read = pd.read_csv(file)
     # Replace values above threshold with NaN
     df_read[df_read > 9e4] = np.nan
@@ -152,7 +151,7 @@ def getFOVDotProductwithSun(df, observation_time):
 
     sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
 
-    return sun_vector_ecef, df[df["sunlit_flag"]].copy()
+    return sun_vector_ecef, df
 
 
 def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
@@ -204,7 +203,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
 
 def main():
     # Main function to execute the code
-    filename = "\\MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
+    filename = "MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
     at_time = "2023-12-23  00:00:13"
     sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 

@@ -38,10 +38,10 @@ function:
 # import module
 import albedoIrradiance as arad
 import pandas as pd
-import plotly.express as px  # (optional)
+import plotly.express as px  # optional
 
 # test satellite location and time
-filename = "\\MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
+filename = "MCD43C3_E_BSA_2023-12-19_rgb_360x180.SS"
 
 at_time = "2023-12-23  00:00:13"
 sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
@@ -79,7 +79,7 @@ fig.update_traces(marker=dict(size=5))
 fig.write_html("irradiance_23122024.html")
 fig.update_geos(resolution=110)
 fig.update_layout(
-    title_text="<b>irradiance W/m^2  </b><br>",
+    title_text="<b>irradiance (W/m^2) from satellite FOV </b><br>",
     title_x=0.5,
     title_y=0.93,
     font_family="Arial",
