@@ -187,7 +187,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
         * df["cell_area"]
         * df["dot_prod_with_sun"]
         * df["dot_prod_with_panel"]
-    ) / (np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
+    ) / (4 * np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
 
     df["irradiance"] = df["irradiance"].clip(0, None)
 
