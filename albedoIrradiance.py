@@ -59,7 +59,7 @@ def getEarthAlbedodf(filename):
 
     df_earth = pd.DataFrame(pairs, columns=["lat", "lon"])
 
-    differential_area = np.cos(np.radians(resolution)) * np.array(
+    differential_area = np.radians(resolution) * np.array(
         [
             np.abs(
                 np.cos(np.radians(element - 0.5 * resolution))
@@ -70,7 +70,7 @@ def getEarthAlbedodf(filename):
     )
 
     cell_area_matrix = np.tile(differential_area[:, np.newaxis], (1, earth_shape[1]))
-    df_earth["cell_area"] = cell_area_matrix.flatten()
+    df_earth["cell_area"] = cell_area_matrix.flatten() * earth_mean_radius**2
     df_earth["albedo"] = albedo_matrix.flatten()
 
     return df_earth
@@ -181,16 +181,13 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
     )
 
     # Calculate irradiance
-    prefactor = (
-        am0_intensity * earth_mean_radius**2 / (np.pi * sat_vector_ecef.norm()) ** 2
-    )
-    df["irradiance"] = (
+    df["irradiance"] = am0_intensity * (
         df["sunlit_flag"]
         * df["albedo"]
         * df["cell_area"]
         * df["dot_prod_with_sun"]
         * df["dot_prod_with_panel"]
-    ) * prefactor
+    ) / (np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
 
     df["irradiance"] = df["irradiance"].clip(0, None)
 
