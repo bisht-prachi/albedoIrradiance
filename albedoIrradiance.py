@@ -120,8 +120,8 @@ def getSatFovdf(df_earth, sat_vector_ecef):
     return df
 
     
-def getFOVGeoPlot(df, location, at_time):    
-    fig = px.scatter_geo(df, lat='lat', lon='lon', color='satfov_flag', opacity=0.3,
+def getFOVGeoPlot(location, at_time):    
+    fig = px.scatter_geo(df_earth, lat='lat', lon='lon', color='satfov_flag', opacity=0.3,
                           height=600, color_continuous_scale='plasma_r',                     
                           labels={'satfov':''})
     fig.update_traces(marker=dict(size=5))

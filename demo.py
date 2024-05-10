@@ -68,6 +68,6 @@ print(
 )
 
 # use following if plotly installed
-arad.getFOVGeoPlot(geo_dataframe,location, at_time)
+arad.getFOVGeoPlot(location, at_time)
 arad.getSunlitGeoPlot(geo_dataframe, location, at_time)
 arad.getIrradianceGeoPlot(geo_dataframe, location, at_time)
