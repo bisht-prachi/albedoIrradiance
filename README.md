@@ -74,12 +74,9 @@ python albedoIrradiance.py
 Location: (237.7391929, 6557.207059, 2746.6659)
 Time: 23-12-2023 00:00:13
 Irradiance: [irradiance value] W/m^2
-![satfov_23122024](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/71a18c45-1a12-4c9d-b7e1-1327da979887)
-
-![sunlit_23122024](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/ef3e5b81-d698-4410-b6aa-8f48fa3ebac9)
-
-![irradiance_2023-12-23 00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/896dcb2e-f322-47f5-9eff-6d145cf016c3)
-
+![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/41260015-de7a-4048-8c2a-ddaab017a68b)
+![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/a12ddb7b-5cff-4f99-afc0-855d7d423d2d)
+![irradiance_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/dda78758-4507-470e-b31f-0ca9e5b5e0b1)
 
 
 
