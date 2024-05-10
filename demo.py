@@ -38,9 +38,8 @@ function:
 # import module
 import albedoIrradiance as arad
 import pandas as pd
-import plotly.express as px  # optional
 
-# test satellite location and time
+# test satellite locations and times
 filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
 at_time = "2023-12-23  00:00:13"
 sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
@@ -49,10 +48,15 @@ sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
 # at_time = "2023-03-20 00:51:00"
 # sc_x_pos, sc_y_pos, sc_z_pos = (1207.007071, 961.485658,6935.483990	)
 
+# filename = "MCD43C3_M_BSA_2023-03-01_rgb_360x180.SS"
+# at_time = "2023-03-23 01:46:30"
+# sc_x_pos, sc_y_pos, sc_z_pos = (-1383.709243, 1007.263423, 6896.115112)
+
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
 arad.getEarthAlbedodf(filename)
 
 observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
+
 # Get irradiance
 geo_dataframe, irradiance = arad.getIrradianceAtSat(
     observation_time, sc_x_pos, sc_y_pos, sc_z_pos
@@ -63,43 +67,7 @@ print(
     f"This is the albedo irradiance at satellite location {location} at time {at_time}:\n{irradiance} W/m^2"
 )
 
-
 # use following if plotly installed
-fig = px.scatter_geo(
-    geo_dataframe,
-    lat="lat",
-    lon="lon",
-    color="irradiance",
-    opacity=0.3,
-    height=600,
-    color_continuous_scale="Blues_r",
-    range_color=[geo_dataframe["irradiance"].min(), geo_dataframe["irradiance"].max()],
-    labels={"irradiance": ""},
-)
-
-fig.update_traces(marker=dict(size=5))
-fig.update_geos(resolution=110)
-fig.update_layout(
-    title_text=f"<b>irradiance (W/m^2) from satellite FOV <br> satellite at {location} on {at_time}</b><br>",
-    title_x=0.5,
-    title_y=0.97,
-    font_family="Arial",
-    font_size=16,
-    geo=dict(bgcolor="cornflowerblue", landcolor="forestgreen"),
-    coloraxis_colorbar=dict(
-        orientation="v",
-        len=0.65,
-        xanchor="right",
-        x=1.08,
-        yanchor="bottom",
-        y=0.15,
-        thickness=25,
-        bgcolor="white",
-    ),
-)
-
-formatted_time = at_time.replace(":", "-")
-# geo visulaization of irradiance from the field-of-view of satellite saved as html file
-fig.write_html(f"irradiance_{formatted_time}.html")
-
-fig.show()
+arad.getFOVGeoPlot(geo_dataframe,location, at_time)
+arad.getSunlitGeoPlot(geo_dataframe, location, at_time)
+arad.getIrradianceGeoPlot(geo_dataframe, location, at_time)

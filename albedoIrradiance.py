@@ -21,6 +21,7 @@ from astropy.coordinates import (
 )
 import astropy.units as u
 from astropy import constants as const
+import plotly.express as px  # optional
 
 
 # Getting the directory containing albedo dataset wrt to current directory
@@ -113,10 +114,27 @@ def getSatFovdf(df_earth, sat_vector_ecef):
     sat_norm_ecef = sat_vector_ecef / sat_vector_ecef.norm()
 
     df_earth["dot_prod_with_sat"] = sat_norm_ecef.dot(cell_norm_vectors)
+    df_earth["satfov_flag"] = df_earth['dot_prod_with_sat'] >= fov_limit
     df = df_earth[df_earth["dot_prod_with_sat"] >= fov_limit].copy()
 
     return df
 
+    
+def getFOVGeoPlot(df, location, at_time):    
+    fig = px.scatter_geo(df, lat='lat', lon='lon', color='satfov_flag', opacity=0.3,
+                          height=600, color_continuous_scale='plasma_r',                     
+                          labels={'satfov':''})
+    fig.update_traces(marker=dict(size=5))
+    fig.update_geos(resolution=110)
+    fig.update_layout(title_text='<b>satellite field-of-view </b><br>', title_x=0.5, title_y = 0.93,
+                      font_family="Arial",font_size=22, geo=dict(bgcolor='cornflowerblue', landcolor = 'forestgreen'), 
+                      coloraxis_colorbar=dict(orientation='v',  len=0.65, xanchor="right", x=1.08,
+                      yanchor='bottom', y=0.15, thickness=35))
+    formatted_time = at_time.replace(":", "-")
+    # geo visulaization of the field-of-view of satellite saved as html file
+    fig.write_html(f"satfov_{formatted_time}.html")
+    fig.write_image(f"satfov_{formatted_time}.png")
+    fig.show()
 
 def getFOVElementVectorsECEF(df):
     # Calculate element vectors in ECEF coordinates
@@ -194,6 +212,64 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
     irradiance = df["irradiance"].sum()
 
     return df, irradiance
+
+def getIrradianceGeoPlot(df, location, at_time):
+    fig = px.scatter_geo(
+    df,
+    lat="lat",
+    lon="lon",
+    color="irradiance",
+    opacity=0.3,
+    height=600,
+    color_continuous_scale="Blues_r",
+    range_color=[df["irradiance"].min(), df["irradiance"].max()],
+    labels={"irradiance": ""},
+    )
+    
+    fig.update_traces(marker=dict(size=5))
+    fig.update_geos(resolution=110)
+    fig.update_layout(
+        title_text=f"<b>irradiance (W/m^2) from satellite FOV <br> satellite at {location} on {at_time}</b><br>",
+        title_x=0.5,
+        title_y=0.97,
+        font_family="Arial",
+        font_size=16,
+        geo=dict(bgcolor="cornflowerblue", landcolor="forestgreen"),
+        coloraxis_colorbar=dict(
+            orientation="v",
+            len=0.65,
+            xanchor="right",
+            x=1.08,
+            yanchor="bottom",
+            y=0.15,
+            thickness=25,
+            bgcolor="white",
+        ),
+    )
+    
+    formatted_time = at_time.replace(":", "-")
+    # geo visulaization of irradiance from the field-of-view of satellite saved as html file
+    fig.write_html(f"irradiance_{formatted_time}.html")    
+    fig.write_image(f"irradiance_{formatted_time}.png") 
+    fig.show()
+    
+
+    
+def getSunlitGeoPlot(df, location, at_time):      
+    fig = px.scatter_geo(df, lat='lat', lon='lon', color='sunlit_flag', 
+                     height=600, color_continuous_scale='Blues_r', opacity=0.15,                    
+                     labels={'sunlit':''})
+    fig.update_traces(marker=dict(size=5))
+    fig.update_geos(resolution=110)
+    fig.update_layout(title_text='<b>sunlit area</b><br>', title_x=0.5, title_y = 0.93,
+                      font_family="Arial",font_size=22, geo=dict(bgcolor='cornflowerblue', landcolor = 'forestgreen'), 
+                      coloraxis_colorbar=dict(orientation='v',  len=0.65, xanchor="right", x=1.08,
+                      yanchor='bottom', y=0.15, thickness=35))
+    formatted_time = at_time.replace(":", "-")
+    # geo visulaization of sunlit area the field-of-view of satellite saved as html file
+    fig.write_html(f"sunlit_{formatted_time}.html")
+    fig.write_image(f"sunlit_{formatted_time}.png")
+    fig.show()
 
 
 def main():
