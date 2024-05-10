@@ -75,11 +75,7 @@ Location: (237.7391929, 6557.207059, 2746.6659)
 Time: 23-12-2023 00:00:13
 Irradiance: [irradiance value] W/m^2
 
-![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/1c24b2a7-bb6c-47d1-8958-69f0bbdd3be7)
-
-
-![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/f1a934d3-07f3-4ece-8505-be37d784ae64)
-
-
-![irradiance_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/0a539f58-851b-4988-b9aa-1d70f00dcb38)
+![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/b62a8ae3-e0ad-40c6-a8aa-2a19155bf244)
+![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/af72a587-bbda-4737-ba8c-36297beef6eb)
+![irradiance_2023-12-23 00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/04cf88d1-16c6-44a4-b36d-bc8bc9107291)
 
