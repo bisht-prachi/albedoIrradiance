@@ -28,13 +28,14 @@ import plotly.express as px  # optional
 folder_name = "albedoDataset"
 
 ## Global constants
-am0_intensity = 1367 # W / m^2
+am0_intensity = 1367  # W / m^2
 earth_mean_radius = const.R_earth.to(u.km)
 earth_equatorial_radius = 6378.137 * u.km
 earth_polar_radius = 6356.7523142 * u.km
 
 
 ## Functions
+
 
 def getEarthAlbedodf(filename):
     # df_Earth is initialized globally. useful if getIrradianceAtSat() is used in loop. need not
@@ -95,7 +96,9 @@ def getRadiusAtLat(df_earth):
 def getSatVectorECEF(sc_lat, sc_lon, sc_alt):
     # Calculate satellite vector in Cartesian representation
     sat_vector_ecef = SphericalRepresentation(
-        lat=sc_lat * u.deg, lon=sc_lon * u.deg, distance=earth_mean_radius + sc_alt * u.km
+        lat=sc_lat * u.deg,
+        lon=sc_lon * u.deg,
+        distance=earth_mean_radius + sc_alt * u.km,
     ).to_cartesian()
     return sat_vector_ecef
 
@@ -114,27 +117,48 @@ def getSatFovdf(df_earth, sat_vector_ecef):
     sat_norm_ecef = sat_vector_ecef / sat_vector_ecef.norm()
 
     df_earth["dot_prod_with_sat"] = sat_norm_ecef.dot(cell_norm_vectors)
-    df_earth["satfov_flag"] = df_earth['dot_prod_with_sat'] >= fov_limit
+    df_earth["satfov_flag"] = df_earth["dot_prod_with_sat"] >= fov_limit
     df = df_earth[df_earth["dot_prod_with_sat"] >= fov_limit].copy()
 
     return df
 
-    
-def getFOVGeoPlot(location, at_time):    
-    fig = px.scatter_geo(df_earth, lat='lat', lon='lon', color='satfov_flag', opacity=0.3,
-                          height=600, color_continuous_scale='plasma_r',                     
-                          labels={'satfov':''})
+
+def getFOVGeoPlot(location, at_time):
+    fig = px.scatter_geo(
+        df_earth,
+        lat="lat",
+        lon="lon",
+        color="satfov_flag",
+        opacity=0.3,
+        height=600,
+        color_continuous_scale="plasma_r",
+        labels={"satfov": ""},
+    )
     fig.update_traces(marker=dict(size=5))
     fig.update_geos(resolution=110)
-    fig.update_layout(title_text='<b>satellite field-of-view </b><br>', title_x=0.5, title_y = 0.93,
-                      font_family="Arial",font_size=22, geo=dict(bgcolor='cornflowerblue', landcolor = 'forestgreen'), 
-                      coloraxis_colorbar=dict(orientation='v',  len=0.65, xanchor="right", x=1.08,
-                      yanchor='bottom', y=0.15, thickness=35))
+    fig.update_layout(
+        title_text="<b>satellite field-of-view </b><br>",
+        title_x=0.5,
+        title_y=0.93,
+        font_family="Arial",
+        font_size=22,
+        geo=dict(bgcolor="cornflowerblue", landcolor="forestgreen"),
+        coloraxis_colorbar=dict(
+            orientation="v",
+            len=0.65,
+            xanchor="right",
+            x=1.08,
+            yanchor="bottom",
+            y=0.15,
+            thickness=35,
+        ),
+    )
     formatted_time = at_time.replace(":", "-")
     # geo visulaization of the field-of-view of satellite saved as html file
     fig.write_html(f"satfov_{formatted_time}.html")
     fig.write_image(f"satfov_{formatted_time}.png")
     fig.show()
+
 
 def getFOVElementVectorsECEF(df):
     # Calculate element vectors in ECEF coordinates
@@ -159,8 +183,8 @@ def getFOVDotProductwithSun(df, observation_time):
 
     # sun_altaz_cartesian = sun_altaz.represent_as(CartesianRepresentation)
     # sun_norm_altaz = sun_altaz_cartesian / sun_altaz_cartesian.norm()
-    
-    sun_vector_ecef = sun_gcrs.transform_to('itrs').cartesian
+
+    sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
     sun_norm_ecef = sun_vector_ecef / sun_vector_ecef.norm()
 
     element_vectors_ecef = getFOVElementVectorsECEF(df)
@@ -169,7 +193,6 @@ def getFOVDotProductwithSun(df, observation_time):
     df["dot_prod_with_sun"] = sun_norm_ecef.dot(element_norm_ecef)
 
     sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
-    
 
     return sun_vector_ecef, df
 
@@ -194,8 +217,8 @@ def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
 def getDistToSat(df, sat_vector_ecef):
     # Calculate the distance between the elements and satellite
     element_vectors_ecef = getFOVElementVectorsECEF(df)
-    df['dist_to_sat'] = (sat_vector_ecef - element_vectors_ecef).norm()
-    
+    df["dist_to_sat"] = (sat_vector_ecef - element_vectors_ecef).norm()
+
     return df
 
 
@@ -205,22 +228,25 @@ def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
     sat_vector_ecef = getSatVectorECEF(sc_lat, sc_lon, sc_alt)
 
     df = getSatFovdf(df_earth, sat_vector_ecef)
-    
+
     sun_vector_ecef, df = getFOVDotProductwithSun(df, observation_time)
     panel_vector_ecef, df = getFOVDotProductwithPanel(
         df, sat_vector_ecef, sun_vector_ecef
     )
 
-    
     df = getDistToSat(df, sat_vector_ecef)
     # Calculate irradiance
-    df["irradiance"] = am0_intensity * (
-        df["sunlit_flag"]
-        * df["albedo"]
-        * df["cell_area"]
-        * df["dot_prod_with_sun"]
-        * df["dot_prod_with_sat"]
-    ) / (np.pi * df['dist_to_sat'] ** 2)
+    df["irradiance"] = (
+        am0_intensity
+        * (
+            df["sunlit_flag"]
+            * df["albedo"]
+            * df["cell_area"]
+            * df["dot_prod_with_sun"]
+            * df["dot_prod_with_sat"]
+        )
+        / (np.pi * df["dist_to_sat"] ** 2)
+    )
 
     df["irradiance"] = df["irradiance"].clip(0, None)
 
@@ -228,19 +254,20 @@ def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
 
     return df, irradiance
 
+
 def getIrradianceGeoPlot(df, location, at_time):
     fig = px.scatter_geo(
-    df,
-    lat="lat",
-    lon="lon",
-    color="irradiance",
-    opacity=0.3,
-    height=600,
-    color_continuous_scale="Blues_r",
-    range_color=[df["irradiance"].min(), df["irradiance"].max()],
-    labels={"irradiance": ""},
+        df,
+        lat="lat",
+        lon="lon",
+        color="irradiance",
+        opacity=0.3,
+        height=600,
+        color_continuous_scale="Blues_r",
+        range_color=[df["irradiance"].min(), df["irradiance"].max()],
+        labels={"irradiance": ""},
     )
-    
+
     fig.update_traces(marker=dict(size=5))
     fig.update_geos(resolution=110)
     fig.update_layout(
@@ -261,25 +288,44 @@ def getIrradianceGeoPlot(df, location, at_time):
             bgcolor="white",
         ),
     )
-    
+
     formatted_time = at_time.replace(":", "-")
     # geo visulaization of irradiance from the field-of-view of satellite saved as html file
-    fig.write_html(f"irradiance_{formatted_time}.html")    
-    fig.write_image(f"irradiance_{formatted_time}.png") 
+    fig.write_html(f"irradiance_{formatted_time}.html")
+    fig.write_image(f"irradiance_{formatted_time}.png")
     fig.show()
-    
 
-    
-def getSunlitGeoPlot(df, location, at_time):      
-    fig = px.scatter_geo(df, lat='lat', lon='lon', color='sunlit_flag', 
-                     height=600, color_continuous_scale='Blues_r', opacity=0.15,                    
-                     labels={'sunlit':''})
+
+def getSunlitGeoPlot(df, location, at_time):
+    fig = px.scatter_geo(
+        df,
+        lat="lat",
+        lon="lon",
+        color="sunlit_flag",
+        height=600,
+        color_continuous_scale="Blues_r",
+        opacity=0.15,
+        labels={"sunlit": ""},
+    )
     fig.update_traces(marker=dict(size=5))
     fig.update_geos(resolution=110)
-    fig.update_layout(title_text='<b>sunlit area</b><br>', title_x=0.5, title_y = 0.93,
-                      font_family="Arial",font_size=22, geo=dict(bgcolor='cornflowerblue', landcolor = 'forestgreen'), 
-                      coloraxis_colorbar=dict(orientation='v',  len=0.65, xanchor="right", x=1.08,
-                      yanchor='bottom', y=0.15, thickness=35))
+    fig.update_layout(
+        title_text="<b>sunlit area</b><br>",
+        title_x=0.5,
+        title_y=0.93,
+        font_family="Arial",
+        font_size=22,
+        geo=dict(bgcolor="cornflowerblue", landcolor="forestgreen"),
+        coloraxis_colorbar=dict(
+            orientation="v",
+            len=0.65,
+            xanchor="right",
+            x=1.08,
+            yanchor="bottom",
+            y=0.15,
+            thickness=35,
+        ),
+    )
     formatted_time = at_time.replace(":", "-")
     # geo visulaization of sunlit area the field-of-view of satellite saved as html file
     fig.write_html(f"sunlit_{formatted_time}.html")
@@ -289,22 +335,22 @@ def getSunlitGeoPlot(df, location, at_time):
 
 def main():
     # Main function to execute the code
-    
+
     # test satellite locations and times
     filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
     at_time = "2023-12-23  00:00:13"
     sc_lat, sc_lon, sc_alt = (22, 88, 760)
-    
+
     # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
     getEarthAlbedodf(filename)
-    
+
     observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
-    
+
     # Get irradiance
     geo_dataframe, irradiance = getIrradianceAtSat(
         observation_time, sc_lat, sc_lon, sc_alt
     )
-    
+
     location = f"({sc_lat}\u00b0, {sc_lon}\u00b0, {sc_alt} km) "
     print(
         f"This is the albedo irradiance at satellite location {location} at time {at_time}:\n{irradiance} W/m^2"
