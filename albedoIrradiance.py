@@ -190,7 +190,9 @@ def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
 
     return panel_vector_ecef, df
 
+
 def getDistToSat(df, sat_vector_ecef):
+    # Calculate the distance between the elements and satellite
     element_vectors_ecef = getFOVElementVectorsECEF(df)
     df['dist_to_sat'] = (sat_vector_ecef - element_vectors_ecef).norm()
     
