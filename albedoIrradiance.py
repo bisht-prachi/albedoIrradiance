@@ -157,15 +157,19 @@ def getFOVDotProductwithSun(df, observation_time):
     sun_altaz = sun_gcrs.transform_to(AltAz(location=locations))
     df["sunlit_flag"] = sun_altaz.alt.deg > 0
 
-    sun_altaz_cartesian = sun_altaz.represent_as(CartesianRepresentation)
-    sun_norm_altaz = sun_altaz_cartesian / sun_altaz_cartesian.norm()
+    # sun_altaz_cartesian = sun_altaz.represent_as(CartesianRepresentation)
+    # sun_norm_altaz = sun_altaz_cartesian / sun_altaz_cartesian.norm()
+    
+    sun_vector_ecef = sun_gcrs.transform_to('itrs').cartesian
+    sun_norm_ecef = sun_vector_ecef / sun_vector_ecef.norm()
 
     element_vectors_ecef = getFOVElementVectorsECEF(df)
     element_norm_ecef = element_vectors_ecef / element_vectors_ecef.norm()
 
-    df["dot_prod_with_sun"] = sun_norm_altaz.dot(element_norm_ecef)
+    df["dot_prod_with_sun"] = sun_norm_ecef.dot(element_norm_ecef)
 
     sun_vector_ecef = sun_gcrs.transform_to("itrs").cartesian
+    
 
     return sun_vector_ecef, df
 
@@ -205,7 +209,7 @@ def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
         * df["cell_area"]
         * df["dot_prod_with_sun"]
         * df["dot_prod_with_sat"]
-    ) / (4 * np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
+    ) / (np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
 
     df["irradiance"] = df["irradiance"].clip(0, None)
 
