@@ -141,7 +141,7 @@ def getFOVElementVectorsECEF(df):
     element_vectors_ecef = SphericalRepresentation(
         lat=df["lat"].values * u.deg,
         lon=df["lon"].values * u.deg,
-        distance=earth_mean_radius * u.km,
+        distance=earth_mean_radius,
     ).to_cartesian()
 
     return element_vectors_ecef
@@ -190,6 +190,12 @@ def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
 
     return panel_vector_ecef, df
 
+def getDistToSat(df, sat_vector_ecef):
+    element_vectors_ecef = getFOVElementVectorsECEF(df)
+    df['dist_to_sat'] = (sat_vector_ecef - element_vectors_ecef).norm()
+    
+    return df
+
 
 def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
     # Main function to calculate irradiance at the satellite
@@ -197,11 +203,14 @@ def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
     sat_vector_ecef = getSatVectorECEF(sc_lat, sc_lon, sc_alt)
 
     df = getSatFovdf(df_earth, sat_vector_ecef)
+    
     sun_vector_ecef, df = getFOVDotProductwithSun(df, observation_time)
     panel_vector_ecef, df = getFOVDotProductwithPanel(
         df, sat_vector_ecef, sun_vector_ecef
     )
 
+    
+    df = getDistToSat(df, sat_vector_ecef)
     # Calculate irradiance
     df["irradiance"] = am0_intensity * (
         df["sunlit_flag"]
@@ -209,7 +218,7 @@ def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
         * df["cell_area"]
         * df["dot_prod_with_sun"]
         * df["dot_prod_with_sat"]
-    ) / (np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
+    ) / (np.pi * df['dist_to_sat'] ** 2)
 
     df["irradiance"] = df["irradiance"].clip(0, None)
 
@@ -282,7 +291,7 @@ def main():
     # test satellite locations and times
     filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
     at_time = "2023-12-23  00:00:13"
-    sc_lat, sc_lon, sc_alt = (22, 88, 740)
+    sc_lat, sc_lon, sc_alt = (22, 88, 760)
     
     # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
     getEarthAlbedodf(filename)
