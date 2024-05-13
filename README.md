@@ -28,19 +28,19 @@ getEarthAlbedodf(filename)
 
 ## Function
 
-getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos)
+getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt)
 
 	Input:
 	1). at_time: time eg. "23-12-2023  00:00:13"
-	2). sc_x_pos: spaccraft x poisition (ECEF)
-	3). sc_y_pos: spaccraft y poisition (ECEF)
-	4). sc_z_pos: spaccraft z poisition (ECEF)
+	2). sc_lat: spaccraft latitude (degrees)
+        3). sc_lon: spaccraft longitude (degrees)
+        4). sc_alt: spaccraft altitude (km)
 
 	Output:
 	1). dataframe containing:
-	       ['lat', 'lon', 'cell_area', 'albedo', 'earth_radius_at_lat',
-	      'dot_prod_with_sat', 'sunlit_flag', 'dot_prod_with_sun',
-	      'dot_prod_with_panel', 'irradiance']
+	       ['lat', 'lon', 'cell_area', 'albedo',
+	      'dot_prod_with_sun', 'sunlit_flag', 
+	      'dot_prod_with_sat', 'irradiance']
 	    all within the sc field of view
 	
 	2). albedo irradiance on a sun-pointing sc in W/m^2
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 ## Usage
 
 1. Place your albedo data CSV file in the subdirectory 'albedo_dataset'.
-2. Update the `filename` (albedo data CSV file), `sc_x_pos`, `sc_y_pos`, `sc_z_pos`, and `at_time` variables in the `main` function with your desired values.
+2. Update the `filename` (albedo data CSV file), `sc_lat`, `sc_lon`, `sc_alt`, and `at_time` variables in the `main` function with your desired values.
 3. Run the script:
 
 ```terminal
@@ -71,11 +71,11 @@ python albedoIrradiance.py
 
 ## Example
 
-Location: (237.7391929, 6557.207059, 2746.6659)
+Location: (22°, 88°, 740km)
 Time: 23-12-2023 00:00:13
 Irradiance: [irradiance value] W/m^2
+![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/23e7d73e-225b-4e5d-9cfe-1c7da470899a)
+![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/63ab9fc4-2657-4108-b7a1-173e865f3ac5)
+![irradiance_2023-12-23 00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/bb3cd15d-0cb5-46a6-8a6d-71951bca57e4)
 
-![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/b62a8ae3-e0ad-40c6-a8aa-2a19155bf244)
-![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/af72a587-bbda-4737-ba8c-36297beef6eb)
-![irradiance_2023-12-23 00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/04cf88d1-16c6-44a4-b36d-bc8bc9107291)
 
