@@ -92,11 +92,11 @@ def getRadiusAtLat(df_earth):
     return df_earth
 
 
-def getSatVectorECEF(sc_x_pos, sc_y_pos, sc_z_pos):
+def getSatVectorECEF(sc_lat, sc_lon, sc_alt):
     # Calculate satellite vector in Cartesian representation
-    sat_vector_ecef = CartesianRepresentation(
-        x=sc_x_pos * u.km, y=sc_y_pos * u.km, z=sc_z_pos * u.km
-    )
+    sat_vector_ecef = SphericalRepresentation(
+        lat=sc_lat * u.deg, lon=sc_lon * u.deg, distance=earth_mean_radius + sc_alt * u.km
+    ).to_cartesian()
     return sat_vector_ecef
 
 
@@ -187,10 +187,10 @@ def getFOVDotProductwithPanel(df, sat_vector_ecef, sun_vector_ecef):
     return panel_vector_ecef, df
 
 
-def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
+def getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt):
     # Main function to calculate irradiance at the satellite
     observation_time = Time(at_time)  # , '%d-%m-%Y  %H:%M:%S')
-    sat_vector_ecef = getSatVectorECEF(sc_x_pos, sc_y_pos, sc_z_pos)
+    sat_vector_ecef = getSatVectorECEF(sc_lat, sc_lon, sc_alt)
 
     df = getSatFovdf(df_earth, sat_vector_ecef)
     sun_vector_ecef, df = getFOVDotProductwithSun(df, observation_time)
@@ -204,7 +204,7 @@ def getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos):
         * df["albedo"]
         * df["cell_area"]
         * df["dot_prod_with_sun"]
-        * df["dot_prod_with_panel"]
+        * df["dot_prod_with_sat"]
     ) / (4 * np.pi * (sat_vector_ecef.norm() - earth_mean_radius) ** 2)
 
     df["irradiance"] = df["irradiance"].clip(0, None)
@@ -274,19 +274,23 @@ def getSunlitGeoPlot(df, location, at_time):
 
 def main():
     # Main function to execute the code
+    
+    # test satellite locations and times
     filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
     at_time = "2023-12-23  00:00:13"
-    sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
-
-    observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
-
+    sc_lat, sc_lon, sc_alt = (22, 88, 740)
+    
     # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
     getEarthAlbedodf(filename)
+    
+    observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
+    
+    # Get irradiance
     geo_dataframe, irradiance = getIrradianceAtSat(
-        observation_time, sc_x_pos, sc_y_pos, sc_z_pos
+        observation_time, sc_lat, sc_lon, sc_alt
     )
-
-    location = f"({sc_x_pos}, {sc_y_pos}, {sc_z_pos}) (km)"
+    
+    location = f"({sc_lat}\u00b0, {sc_lon}\u00b0, {sc_alt} km) "
     print(
         f"This is the albedo irradiance at satellite location {location} at time {at_time}:\n{irradiance} W/m^2"
     )

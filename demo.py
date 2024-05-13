@@ -22,9 +22,9 @@ function:
     getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos, filename):
     input:
         1). observation_time: time eg. datetime object e.g. "23-12-2023  00:00:13"
-        2). sc_x_pos: spaccraft x poisition (ECEF)
-        3). sc_y_pos: spaccraft y poisition (ECEF)
-        4). sc_z_pos: spaccraft z poisition (ECEF)
+        2). sc_lat: spaccraft latitude (degrees)
+        3). sc_lon: spaccraft longitude (degrees)
+        4). sc_alt: spaccraft altitude (km)
     output:
         1). dataframe containing:
                ['lat', 'lon', 'cell_area', 'albedo', 'earth_radius_at_lat',
@@ -32,7 +32,7 @@ function:
               'dot_prod_with_panel', 'irradiance']
         all within the sc field of view
         
-        2). albedo irradiance on a sun-pointing LEO S/C in W/m^2
+        2). albedo irradiance on  LEO S/C in W/m^2
 """
 
 # import module
@@ -42,15 +42,7 @@ import pandas as pd
 # test satellite locations and times
 filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
 at_time = "2023-12-23  00:00:13"
-sc_x_pos, sc_y_pos, sc_z_pos = (237.7391929, 6557.207059, 2746.6659)
-
-# filename = "MCD43C3_M_BSA_2023-03-01_rgb_360x180.SS"
-# at_time = "2023-03-20 00:51:00"
-# sc_x_pos, sc_y_pos, sc_z_pos = (1207.007071, 961.485658,6935.483990	)
-
-# filename = "MCD43C3_M_BSA_2023-03-01_rgb_360x180.SS"
-# at_time = "2023-03-23 01:46:30"
-# sc_x_pos, sc_y_pos, sc_z_pos = (-1383.709243, 1007.263423, 6896.115112)
+sc_lat, sc_lon, sc_alt = (22, 88, 740)
 
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
 arad.getEarthAlbedodf(filename)
@@ -59,10 +51,10 @@ observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
 
 # Get irradiance
 geo_dataframe, irradiance = arad.getIrradianceAtSat(
-    observation_time, sc_x_pos, sc_y_pos, sc_z_pos
+    observation_time, sc_lat, sc_lon, sc_alt
 )
 
-location = f"({sc_x_pos}, {sc_y_pos}, {sc_z_pos}) (km)"
+location = f"({sc_lat}\u00b0, {sc_lon}\u00b0, {sc_alt} km) "
 print(
     f"This is the albedo irradiance at satellite location {location} at time {at_time}:\n{irradiance} W/m^2"
 )
