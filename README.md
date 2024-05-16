@@ -4,9 +4,10 @@ Author: Prachi Bisht
 Date: 06-05-2024
 
 ## Overview
-albedoIrradiance.py script calculates the albedo irradiance on a LEO spacecraft
-with sun-pointing solar panels at a given location and time using albedo
-dataset from Moderate Resolution Imaging Spectroradiometer (MODIS) aboard Terra Satellite. 
+albedoIrradiance.py script calculates the irradiance due to earthshine/albedo on a LEO spacecraft 
+at a given time and (latitude, longitude, altitude)
+using reflectivity dataset from Moderate Resolution Imaging Spectroradiometer (MODIS) aboard Terra Satellite. 
+Use case: quantify the earthshine irradiance on photovoltaics like solar panels/ sun sensors aboard a LEO spacecraft 
 
 See 'demo.py' for guidance.
 
