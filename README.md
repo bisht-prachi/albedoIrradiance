@@ -6,7 +6,8 @@ Date: 06-05-2024
 ## Overview
 albedoIrradiance.py script calculates the irradiance due to earthshine/albedo on a LEO spacecraft 
 at a given time and (latitude, longitude, altitude)
-using reflectivity dataset from Moderate Resolution Imaging Spectroradiometer (MODIS) aboard Terra Satellite. 
+using CERES (Clouds and the Earth’s Radiant Energy System) Data Product SYN1Deg. 
+
 Use case: quantify the earthshine irradiance on photovoltaics like solar panels/ sun sensors aboard a LEO spacecraft 
 
 See 'demo.py' for guidance.
@@ -17,10 +18,12 @@ See 'demo.py' for guidance.
 getEarthAlbedodf(filename)
 
 	Input:
-	1). filename: albedo refelctivity file from 
-	https://neo.gsfc.nasa.gov/view.php?datasetId=MCD43C3_E_BSA&date=2023-12-01
-	select 'CSV for Excel' file type with 360x180 resolution.
-	can upgrade to higher resolution
+	input:
+        1). albFilename: albedo refelctivity file from 
+                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+    
+        2). inFilename: incoming solar flux file from 
+                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
  
 	Output:
 	1). global dataframe containing:
@@ -75,8 +78,11 @@ python albedoIrradiance.py
 Location: (22°, 88°, 740km)
 Time: 23-12-2023 00:00:13
 Irradiance: [irradiance] W/m^2
-![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/23e7d73e-225b-4e5d-9cfe-1c7da470899a)
-![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/63ab9fc4-2657-4108-b7a1-173e865f3ac5)
-![irradiance_2023-12-23 00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/cb4c1475-b1bd-48a7-be5c-56226c25d4a7)
+![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/8afa6d9b-d983-43b8-abc8-4bf6ac1a10e0)
+![albedo_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/8aaf5589-a864-47c2-a607-209dd007be79)
+![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/2383ae89-ebde-445b-9152-42387acd6e19)
+![irradiance_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/6f3c925f-affb-494e-a222-d5988ffdc237)
+
+
 
 
