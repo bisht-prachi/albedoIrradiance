@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 06-05-2024. Prachi Bisht.
-demo.py
+demo.
 albedo_irradiance.py.
 
 requirements: numpy, pandas, itertools, astropy, plotly(optional)
