@@ -78,10 +78,11 @@ python albedoIrradiance.py
 Location: (22°, 88°, 740km)
 Time: 23-12-2023 00:00:13
 Irradiance: [irradiance] W/m^2
-![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/8afa6d9b-d983-43b8-abc8-4bf6ac1a10e0)
-![albedo_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/8aaf5589-a864-47c2-a607-209dd007be79)
-![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/2383ae89-ebde-445b-9152-42387acd6e19)
-![irradiance_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/6f3c925f-affb-494e-a222-d5988ffdc237)
+![satfov_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/05ead714-8daa-44f0-8748-0b622cba0b97)
+![sunlit_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/c9c26160-2978-47e8-8e58-913a5da7e42b)
+![albedo_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/ad62e2f3-f4ff-4f06-938b-25c2b7eb1773)
+![irradiance_2023-12-23  00-00-13](https://github.com/bisht-prachi/albedoIrradiance/assets/103419553/fc417350-9d03-4412-9225-0b6b736b75e4)
+
 
 
 
