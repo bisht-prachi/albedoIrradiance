@@ -36,9 +36,9 @@ getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt)
 
 	Input:
 	1). at_time: time eg. "23-12-2023  00:00:13"
-	2). sc_lat: spaccraft latitude (degrees)
-        3). sc_lon: spaccraft longitude (degrees)
-        4). sc_alt: spaccraft altitude (km)
+	2). sc_lat: spaceraft latitude (degrees)
+        3). sc_lon: spaceraft longitude (degrees)
+        4). sc_alt: spaceraft altitude (km)
 
 	Output:
 	1). dataframe containing:
