@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 06-05-2024. Prachi Bisht.
-demo.
+demo.py
 albedo_irradiance.py.
 
 requirements: numpy, pandas, itertools, astropy, plotly(optional)
@@ -12,12 +12,12 @@ function:
     input:
         1). albFilename: albedo file from 
                       https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
-                      for the specified date
+                      for a specified date
 
     
         2). inFilename: incoming solar flux file from 
                       https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
-                      for the specified date
+                      for a specified date
 
     output:
         1). global dataframe containing: ['lat', 'lon', 'cell_area', 'albedo']
