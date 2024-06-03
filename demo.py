@@ -10,9 +10,11 @@ requirements: numpy, pandas, itertools, astropy, plotly(optional)
 function: 
     getEarthAlbedodf(filename):
     input:
-        1). filename: albedo refelctivity file from 
-                      https://neo.gsfc.nasa.gov/view.php?datasetId=MCD43C3_E_BSA&date=2023-12-01
-                      can upgrade to higher resolution
+        1). albFilename: albedo refelctivity file from 
+                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+    
+        2). inFilename: incoming solar flux file from 
+                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
     output:
         1). global dataframe containing:
            ['lat', 'lon', 'cell_area', 'albedo']
@@ -40,17 +42,21 @@ import albedoIrradiance as arad
 import pandas as pd
 
 # test satellite locations and times
-filename = "MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
+month = "December"
+year = "2023"
+albFilename = f"CERES_SYN1deg-Month_Terra-Aqua-MODIS_Ed4.1_Observed_TOA_Albedo-All-sky_{month}-{year}{month}-{year}.txt"#"MCD43C3_M_BSA_2023-12-01_rgb_360x180.SS"
+inFilename = f"CERES_EBAF-TOA_Ed4.2_Incoming_Solar_Flux_{month}-{year}{month}-{year}.txt"
+
 at_time = "2023-12-23  00:00:13"
-sc_lat, sc_lon, sc_alt = (22, 88, 740)
+sc_lat, sc_lon, sc_alt = (22, 88, 760)
 
 # Initialize func getEarthAlbedodf() with filename to get earth grid with albedo
-arad.getEarthAlbedodf(filename)
+arad.getEarthAlbedodf(albFilename, inFilename)
 
 observation_time = pd.to_datetime(at_time, format="%Y-%m-%d  %H:%M:%S")
 
-# Get irradiance
-geo_dataframe, irradiance = arad.getIrradianceAtSat(
+# Get irradiance and dataframe containing irradiance from the FOV
+irradiance, geo_dataframe = arad.getIrradianceAtSat(
     observation_time, sc_lat, sc_lon, sc_alt
 )
 
@@ -62,4 +68,5 @@ print(
 # use following if plotly installed
 arad.getFOVGeoPlot(location, at_time)
 arad.getSunlitGeoPlot(geo_dataframe, location, at_time)
+arad.getAlbedoGeoPlot(geo_dataframe, location, at_time)
 arad.getIrradianceGeoPlot(geo_dataframe, location, at_time)
