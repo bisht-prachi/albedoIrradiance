@@ -24,9 +24,9 @@ function:
     getIrradianceAtSat(at_time, sc_x_pos, sc_y_pos, sc_z_pos, filename):
     input:
         1). observation_time: time eg. datetime object e.g. "23-12-2023  00:00:13"
-        2). sc_lat: spaccraft latitude (degrees)
-        3). sc_lon: spaccraft longitude (degrees)
-        4). sc_alt: spaccraft altitude (km)
+        2). sc_lat: spaceraft latitude (degrees)
+        3). sc_lon: spaceraft longitude (degrees)
+        4). sc_alt: spaceraft altitude (km)
     output:
         1). dataframe containing:
                ['lat', 'lon', 'cell_area', 'albedo', 'earth_radius_at_lat',
