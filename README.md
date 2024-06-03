@@ -17,18 +17,19 @@ See 'demo.py' for guidance.
 
 getEarthAlbedodf(filename)
 
-	Input:
 	input:
-        1). albFilename: albedo refelctivity file from 
+        1). albFilename: albedo file from 
                       https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+		      for the specified date/month
     
         2). inFilename: incoming solar flux file from 
                       https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+		      for the specified date/month
  
 	Output:
 	1). global dataframe containing:
 	['lat', 'lon', 'cell_area', 'albedo']
-	of earth for the month 'filename' was collected for
+	of earth for the date/month 'inFilename'/'albFilename' was collected for
 
 ## Function
 
@@ -36,18 +37,18 @@ getIrradianceAtSat(at_time, sc_lat, sc_lon, sc_alt)
 
 	Input:
 	1). at_time: time eg. "23-12-2023  00:00:13"
-	2). sc_lat: spaceraft latitude (degrees)
- 	3). sc_lon: spaceraft longitude (degrees)
-  	4). sc_alt: spaceraft altitude (km)
+	2). sc_lat: spacecraft latitude (degrees)
+ 	3). sc_lon: spacecraft longitude (degrees)
+  	4). sc_alt: spacecraft altitude (km)
 
 	Output:
 	1). dataframe containing:
 	       ['lat', 'lon', 'cell_area', 'albedo',
 	      'dot_prod_with_sun', 'sunlit_flag', 
 	      'dot_prod_with_sat', 'irradiance']
-	    all within the sc field of view
+	    all within the S/C field of view
 	
-	2). albedo irradiance on a sun-pointing sc in W/m^2
+	2). albedo irradiance on a LEO S/C in W/m^2
 
 ## Requirements
 
