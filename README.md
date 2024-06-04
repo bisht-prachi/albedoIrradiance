@@ -8,7 +8,7 @@ albedoIrradiance.py script calculates the irradiance due to earthshine/albedo on
 at a given time and (latitude, longitude, altitude)
 using CERES (Clouds and the Earth’s Radiant Energy System) Data Product EBAF and SYN1Deg. 
 
-Use case: quantify the earthshine irradiance on photovoltaics like solar panels/ sun sensors aboard a LEO spacecraft 
+Use case: quantify the earthshine irradiance on photovoltaics like solar panels/sun sensors aboard a LEO spacecraft 
 
 See 'demo.py' for guidance.
 
