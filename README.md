@@ -6,7 +6,7 @@ Date: 06-05-2024
 ## Overview
 albedoIrradiance.py script calculates the irradiance due to earthshine/albedo on a LEO spacecraft 
 at a given time and (latitude, longitude, altitude)
-using CERES (Clouds and the Earth’s Radiant Energy System) Data Product SYN1Deg. 
+using CERES (Clouds and the Earth’s Radiant Energy System) Data Product EBAF and SYN1Deg. 
 
 Use case: quantify the earthshine irradiance on photovoltaics like solar panels/ sun sensors aboard a LEO spacecraft 
 
@@ -23,7 +23,7 @@ getEarthAlbedodf(filename)
 		      for the specified date/month
     
         2). inFilename: incoming solar flux file from 
-                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+                      https://ceres.larc.nasa.gov/data/#energy-balanced-and-filled-ebaf (EBAF)
 		      for the specified date/month
  
 	Output:
