@@ -16,7 +16,7 @@ function:
 
     
         2). inFilename: incoming solar flux file from 
-                      https://ceres.larc.nasa.gov/data/#syn1deg-level-3 (SYN1deg)
+                      https://ceres.larc.nasa.gov/data/#energy-balanced-and-filled-ebaf (EBAF)
                       for a specified date
 
     output:
