@@ -6,9 +6,8 @@ Date: 06-05-2024
 ## Overview
 albedoIrradiance.py script calculates the irradiance due to earthshine/albedo on a LEO spacecraft 
 at a given time and (latitude, longitude, altitude)
-using CERES (Clouds and the Earth’s Radiant Energy System) Data Products
-	EBAF (for top-of-atmosphere, TOA incoming solar flux)
-	and SYN1Deg (for top-of-atmosphere, TOA albedo).
+using CERES (Clouds and the Earth’s Radiant Energy System) Data Products:
+EBAF (for top-of-atmosphere, TOA incoming solar flux) and SYN1Deg (for top-of-atmosphere, TOA albedo).
 
 Use case: quantify the earthshine irradiance on photovoltaics like solar panels/sun sensors aboard a LEO spacecraft 
 
